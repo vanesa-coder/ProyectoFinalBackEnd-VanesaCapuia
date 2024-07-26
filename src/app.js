@@ -1,7 +1,7 @@
 import express from "express";
-import productRouter from "./router/product.router.js";
-import cartRouter from "./router/cart.router.js"
+import router from "./router/index.router.js"
 import { connectMongoDB } from "./config/mongoDb.config.js";
+import envs from "./config/envs.config.js";
 
 const PORT = 8080;
 const app = express();
@@ -12,11 +12,10 @@ app.use(express.json()); // Este middleware nos permite obtener archivos json
 app.use(express.urlencoded({extended: true }));
 app.use(express.static("public"));
 
-app.use("/api", productRouter);
-app.use("/api", cartRouter);
+app.use("/api", router);
 
 
 
-app.listen(PORT, () => {
-  console.log(`Servidor escuchando en el puerto ${PORT}`);
+app.listen(envs.PORT, () => {
+  console.log(`Servidor escuchando en el puerto ${envs.PORT}`);
 });

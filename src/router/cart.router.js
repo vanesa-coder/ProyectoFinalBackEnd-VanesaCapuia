@@ -1,7 +1,6 @@
 import { Router } from "express";
 import cartManager from "../managers/cartManager.js";
-import { checkProductList } from "../middlewares/checkProductList.middleware.js";
-import { checkProductCart } from "../middlewares/checkProductCart.middleware.js";
+import { checkProductAndCart } from "../middlewares/checkProductAndCart.middleware.js";
 import cartDao from "../dao/cart.dao.js";
 
 
@@ -19,7 +18,7 @@ router.get("/carts", async (req, res)=>{
   }
 });
 
-router.post("/carts", async (req, res) => {
+router.post("/", async (req, res) => {
     try {
       const cart = await cartDao.create();
   
@@ -31,7 +30,7 @@ router.post("/carts", async (req, res) => {
   });
 
 
-  router.get("/carts/:cid", async (req, res) => {
+  router.get("/:cid", async (req, res) => {
     try {
         const { cid } = req.params;  
 
@@ -45,12 +44,12 @@ router.post("/carts", async (req, res) => {
     }
   });
 
-  router.post("/carts/:cid/product/:pid", checkProductList, checkProductCart, async (req, res) => {
+  router.post("/:cid/product/:pid", checkProductAndCart, async (req, res) => {
     try {
       const { cid, pid } = req.params;
       // Chequear que el producto y el carrito existan y sino devolver un status 404 indicando los errores
       
-      const cart = await cartManager.addProductToCart(cid, pid);
+      const cart = await cartDao.addProductToCart(cid, pid);
 
       
 

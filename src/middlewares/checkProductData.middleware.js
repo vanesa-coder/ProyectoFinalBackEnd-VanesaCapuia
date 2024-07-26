@@ -12,13 +12,9 @@ export const checkProductData = async (req, res, next) => {
       };
   
       // verificar que el producto tenga todas las propiedades
-      // if (Object.values(newProduct).includes(undefined)) {
-      //   return res.status(400).json({ status: "error", msg: "Todos los campos son obligatorios" });
-      // }
-
-      if (!title || !description || !price || !code || !stock || !category) {
-        return res.status(400).json({ status: "error", msg: "Todos los campos son obligatorios, excepto 'thumbnail'" });
-    }
+      if (Object.values(newProduct).includes(undefined)) {
+        return res.status(400).json({ status: "error", msg: "Todos los campos son obligatorios" });
+      }
   
       // Next permite que continué la ejecución del endpoint
       next();
