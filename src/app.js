@@ -3,7 +3,7 @@ import router from "./router/index.router.js"
 import { connectMongoDB } from "./config/mongoDb.config.js";
 import envs from "./config/envs.config.js";
 
-const PORT = 8080;
+ 
 const app = express();
 // Conexión con mongo
 connectMongoDB();

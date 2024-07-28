@@ -1,4 +1,5 @@
 import { cartModel } from "./models/cart.model.js";
+import mongoose from "mongoose";
 
 
 const getById = async (id) => {
@@ -36,9 +37,40 @@ const addProductToCart = async (cid, pid) => {
 
 };
 
+const deleteProductInCart = async (cid, pid) => {
+
+  const cart = await cartModel.findById(cid);
+
+  const productsFilter = cart.products.filter( prod => prod.product.toString() !== pid);
+
+  const cartResponse = await cartModel.findByIdAndUpdate(cid, { $set: { products: productsFilter } }, { new: true });
+
+  return cartResponse;
+};
+
+const updateQuantityProductInCart = async (cid, pid, quantity) => {
+  const cart = await cartModel.findOneAndUpdate(
+    { _id: cid, "products.product": pid },
+    { $set: { "products.$.quantity": quantity } },
+    { new: true }
+  );
+
+  return cart;
+};
+
+const deleteAllProductsInCart = async (cid) => {
+  const cart = await cartModel.findByIdAndUpdate(cid, { $set: { products: [] } }, { new: true });
+
+  return cart;
+};
+
+
 
 export default {
   getById,
   create,
   addProductToCart,
+  deleteProductInCart,
+  updateQuantityProductInCart,
+  deleteAllProductsInCart
 }
